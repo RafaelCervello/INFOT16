@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um último encontro, muitos futuros - INFO T16 SENAC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #36454F;
+            --secondary-color: #F5F5F5;
+            --accent-color: #5A6B7D;
+            --text-dark: #2C2C2C;
+            --text-light: #6C757D;
+            --gradient-start: #36454F;
+            --gradient-end: #4A5568;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--secondary-color);
+        }
+
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(rgba(54, 69, 79, 0.7), rgba(54, 69, 79, 0.5)), url('img/patric.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+        }
+
+        .project-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(54, 69, 79, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            background: white;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(54, 69, 79, 0.25);
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-authors {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .emoji-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, white, #f8f9fa);
+            border-left: 5px solid var(--accent-color);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(54, 69, 79, 0.1);
+        }
+
+        .photo-gallery {
+            margin: 3rem 0;
+        }
+
+        .gallery-image {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(54, 69, 79, 0.2);
+            transition: transform 0.3s ease;
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+
+        .backstage-gallery {
+            margin: 3rem 0;
+        }
+
+        .backstage-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(54, 69, 79, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+        }
+
+        .backstage-image:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(54, 69, 79, 0.3);
+        }
+
+        .gallery-subtitle {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .image-modal .modal-dialog {
+            max-width: 80vw;
+        }
+
+        .image-modal .modal-content {
+            background: rgba(0,0,0,0.9);
+            border: none;
+        }
+
+        .image-modal .modal-body {
+            padding: 0;
+            text-align: center;
+        }
+
+        .image-modal img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .image-modal .btn-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            opacity: 1;
+        }
+
+        .footer-section {
+            background: var(--primary-color);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-10px) translateX(-50%); }
+            60% { transform: translateY(-5px) translateX(-50%); }
+        }
+
+        .navbar {
+            background: rgba(245, 245, 245, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(54, 69, 79, 0.15);
+        }
+
+        .navbar-brand {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color) !important;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border-bottom: none;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(54, 69, 79, 0.1);
+        }
+
+        .team-photo {
+            width: 70%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(54, 69, 79, 0.2);
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            max-height: 350px;
+        }
+
+        .member-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .member-badge {
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .project-description {
+            background: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .click-hint {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: rgba(245, 245, 245, 0.95);
+            color: var(--text-dark);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            opacity: 0.9;
+            border: 1px solid rgba(54, 69, 79, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .backstage-image {
+                margin-bottom: 1rem;
+            }
+
+            .image-modal .modal-dialog {
+                max-width: 95vw;
+            }
+
+            .team-photo {
+                max-width: 300px;
+                width: 90%;
+                max-height: 200px;
+                aspect-ratio: 4/3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#"><i class="fas fa-code text-primary"></i> INFO T16</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#inicio">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projetos">Projetos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#bastidores">Bastidores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#despedida">Despedida</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="inicio">
+        <div class="container">
+            <div class="hero-content">
+                <div class="emoji-icon">🌟</div>
+                <h1 class="hero-title">Um último encontro, muitos futuros</h1>
+                <p class="hero-subtitle">A despedida criativa da INFO T16 no SENAC</p>
+                <p class="lead">Entre linhas de código e abraços apertados, a turma apresentou seus projetos finais e celebrou uma jornada que vai muito além da sala 203.</p>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Introduction -->
+        <section class="mb-5">
+            <p class="intro-text">No dia 15 de agosto, a Sala 203 ganhou um silêncio diferente. Misturado aos risos, aos olhos marejados e à ansiedade boa de quem mostra o que criou com as próprias mãos, a INFO T16 viveu seu último grande momento juntos — e, talvez, seu último dia lado a lado.</p>
+            
+            <div class="highlight-box">
+                <p class="mb-0">Mais que uma mostra de tecnologia, foi um verdadeiro rito de passagem. As telas acesas revelavam mais do que sistemas: mostravam histórias, amizade, esforço, coragem. Um retrato real do que construímos ao longo dessa caminhada.</p>
+            </div>
+        </section>
+
+        <!-- Photo Gallery -->
+        <section class="photo-gallery">
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <img src="img/turma.jpg" alt="Vista da apresentação dos projetos" class="gallery-image">
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projetos" class="mb-5">
+            <h2 class="section-title"><i class="fas fa-rocket"></i> Os projetos que marcaram</h2>
+            <p class="text-muted mb-4"><i class="fas fa-hand-pointer"></i> Clique em qualquer projeto para ver mais detalhes sobre a equipe</p>
+            
+            <div class="row">
+                <!-- StepX -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card project-card h-100" data-bs-toggle="modal" data-bs-target="#stepxModal">
+                        <div class="click-hint">
+                            <i class="fas fa-eye"></i> Ver equipe
+                        </div>
+                        <div class="project-header">
+                            <div class="project-title">🔹 StepX</div>
+                            <div class="project-authors">por Gui e Kauã</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Uma paixão por tênis virou e-commerce com identidade própria. Mais que um site, uma vitrine de estilo com lógica sólida, navegação fluida e aquela alegria genuína de ver o sonho sair do papel e virar produto real.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guarupass -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card project-card h-100" data-bs-toggle="modal" data-bs-target="#guarupassModal">
+                        <div class="click-hint">
+                            <i class="fas fa-eye"></i> Ver equipe
+                        </div>
+                        <div class="project-header">
+                            <div class="project-title">🔹 Carteira Digital Guarupass</div>
+                            <div class="project-authors">por Thays, Jhonnata, Andressa e Maycon</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Tecnologia pensada para quem depende do transporte público no dia a dia. Pagamento por QR Code, validação por NFC, transações seguras — tudo para facilitar e melhorar a rotina de quem vive correndo contra o tempo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LVV -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card project-card h-100" data-bs-toggle="modal" data-bs-target="#lvvModal">
+                        <div class="click-hint">
+                            <i class="fas fa-eye"></i> Ver equipe
+                        </div>
+                        <div class="project-header">
+                            <div class="project-title">🔹 Limpe Vícios e Viva (LVV)</div>
+                            <div class="project-authors">por Jonas e Ruan</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Um sistema com propósito: localizar clínicas de reabilitação com responsabilidade, empatia e acolhimento. Uma ferramenta que pode ser o primeiro passo para quem está em busca de recomeço.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ÉderFlix -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card project-card h-100" data-bs-toggle="modal" data-bs-target="#ederflixModal">
+                        <div class="click-hint">
+                            <i class="fas fa-eye"></i> Ver equipe
+                        </div>
+                        <div class="project-header">
+                            <div class="project-title">🔹 ÉderFlix</div>
+                            <div class="project-authors">por Diego, Ezequiel, Henry e Gabi</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Educação com cara de streaming. Vídeos de matemática em um ambiente intuitivo e bonito, com exercícios integrados para reforço. Estudar ficou mais leve, mais acessível, mais possível.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RotaConsulta -->
+                <div class="col-lg-12 mb-4">
+                    <div class="card project-card" data-bs-toggle="modal" data-bs-target="#rotaconsultaModal">
+                        <div class="click-hint">
+                            <i class="fas fa-eye"></i> Ver equipe
+                        </div>
+                        <div class="project-header">
+                            <div class="project-title">🔹 RotaConsulta</div>
+                            <div class="project-authors">por Rafael, Felipe, Muryllo e Davi</div>
+                        </div>
+                        <div class="card-body">
+                            <p>Rotas de ônibus em tempo real. Informação clara para facilitar deslocamentos, otimizar o tempo e devolver minutos preciosos para quem vive a cidade no ritmo dos transportes públicos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Behind the Scenes -->
+        <section id="bastidores" class="mb-5">
+            <h2 class="section-title"><i class="fas fa-film"></i> Bastidores que valem tanto quanto os códigos</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <p>Teve demo funcionando de primeira (e aquele alívio bom), teve bug de última hora, clique curioso de visitantes, nervosismo que virou sorriso. Teve ombro amigo, troca de olhares cúmplices de quem dividiu café, sprint, madrugada e deadline.</p>
+                    <p>Teve aquela sensação estranha e linda de fim de ciclo — com promessa de reencontros, de manter contato, de levar o que vivemos para onde formos.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="highlight-box text-center">
+                        <div class="emoji-icon">💻</div>
+                        <h5>Mais que código</h5>
+                        <p class="mb-0">Cada linha escrita carregava histórias, amizades e sonhos compartilhados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galeria de Bastidores -->
+            <div class="backstage-gallery">
+                <h3 class="gallery-subtitle"><i class="fas fa-camera"></i> Momentos capturados durante a apresentação</h3>
+                <p class="text-muted text-center mb-4">Clique nas imagens para visualizar em tamanho maior</p>
+                
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/mmento.jpg" alt="Momento dos bastidores 1" class="backstage-image" data-image="img/mmento.jpg" data-caption="Momento dos bastidores 1">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento1.jpg" alt="Momento dos bastidores 2" class="backstage-image" data-image="img/momento1.jpg" data-caption="Momento dos bastidores 2">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento2.jpg" alt="Momento dos bastidores 3" class="backstage-image" data-image="img/momento2.jpg" data-caption="Momento dos bastidores 3">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento3.jpg" alt="Momento dos bastidores 4" class="backstage-image" data-image="img/momento3.jpg" data-caption="Momento dos bastidores 4">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/mmento4.jpg" alt="Momento dos bastidores 5" class="backstage-image" data-image="img/mmento4.jpg" data-caption="Momento dos bastidores 5">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento5.jpg" alt="Momento dos bastidores 6" class="backstage-image" data-image="img/momento5.jpg" data-caption="Momento dos bastidores 6">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento6.jpg" alt="Momento dos bastidores 7" class="backstage-image" data-image="img/momento6.jpg" data-caption="Momento dos bastidores 7">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento7.jpg" alt="Momento dos bastidores 8" class="backstage-image" data-image="img/momento7.jpg" data-caption="Momento dos bastidores 8">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento8.jpg" alt="Momento dos bastidores 9" class="backstage-image" data-image="img/momento8.jpg" data-caption="Momento dos bastidores 9">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento9.jpg" alt="Momento dos bastidores 10" class="backstage-image" data-image="img/momento9.jpg" data-caption="Momento dos bastidores 10">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento10.jpg" alt="Momento dos bastidores 11" class="backstage-image" data-image="img/momento10.jpg" data-caption="Momento dos bastidores 11">
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="img/momento11.jpg" alt="Momento dos bastidores 12" class="backstage-image" data-image="img/momento11.jpg" data-caption="Momento dos bastidores 12">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Journey -->
+        <section class="mb-5">
+            <h2 class="section-title"><i class="fas fa-puzzle-piece"></i> Mais que um curso, uma virada</h2>
+            <p>O curso técnico em informática no SENAC foi mais do que aprendizado técnico. Foi sobre resolver problemas reais, trabalhar em equipe, comunicar ideias, acolher falhas, encontrar soluções, aprender a aprender. Saímos com sistemas prontos, mas também com novas versões de nós mesmos.</p>
+        </section>
+
+        <!-- Farewell -->
+        <section id="despedida" class="mb-5">
+            <div class="highlight-box text-center">
+                <div class="emoji-icon">💙</div>
+                <h2 class="section-title">Que essa despedida seja um começo</h2>
+                <p>A INFO T16 encerra sua jornada com projetos incríveis, amizades verdadeiras e um sentimento profundo de gratidão. Porque programar também é sobre cuidar — de pessoas, de tempo, de sonhos.</p>
+                <p>Seguimos agora cada um para um lado, mas levamos tudo o que vivemos juntos.</p>
+                <p><strong>Aos colegas, professores e ao SENAC: obrigado por tanto.</strong></p>
+                <p class="mb-0"><em>E que venham os próximos commits, deploys e cafés às 2h da manhã! ☕</em></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal para visualização de imagens -->
+    <div class="modal fade image-modal" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <img id="modalImage" src="" alt="" class="img-fluid">
+                    <p id="modalCaption" class="text-light mt-3 text-center"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modais para cada projeto -->
+    
+    <!-- Modal StepX -->
+    <div class="modal fade" id="stepxModal" tabindex="-1" aria-labelledby="stepxModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="stepxModalLabel">🔹 StepX - E-commerce de Tênis</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="img/boot.jpg" alt="Equipe StepX" class="team-photo">
+                    <div class="member-list">
+                        <span class="member-badge">👨‍💻 Gui</span>
+                        <span class="member-badge">👨‍💻 Kauã</span>
+                    </div>
+                    <div class="project-description">
+                        <h6><i class="fas fa-info-circle"></i> Sobre o Projeto</h6>
+                        <p>Uma paixão por tênis virou e-commerce com identidade própria. Mais que um site, uma vitrine de estilo com lógica sólida, navegação fluida e aquela alegria genuína de ver o sonho sair do papel e virar produto real.</p>
+                        <hr>
+                        <p><strong>Tecnologias utilizadas:</strong> HTML, CSS, JavaScript, Bootstrap, PHP, MySQL</p>
+                        <p><strong>Principais funcionalidades:</strong> Catálogo de produtos, carrinho de compras, sistema de pagamento, área administrativa</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Guarupass -->
+    <div class="modal fade" id="guarupassModal" tabindex="-1" aria-labelledby="guarupassModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="guarupassModalLabel">🔹 Carteira Digital Guarupass</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="img/carteira.jpg" alt="Equipe Guarupass" class="team-photo">
+                    <div class="member-list">
+                        <span class="member-badge">👩‍💻 Thays</span>
+                        <span class="member-badge">👨‍💻 Jhonnata</span>
+                        <span class="member-badge">👩‍💻 Andressa</span>
+                        <span class="member-badge">👨‍💻 Maycon</span>
+                    </div>
+                    <div class="project-description">
+                        <h6><i class="fas fa-info-circle"></i> Sobre o Projeto</h6>
+                        <p>Tecnologia pensada para quem depende do transporte público no dia a dia. Pagamento por QR Code, validação por NFC, transações seguras — tudo para facilitar e melhorar a rotina de quem vive correndo contra o tempo.</p>
+                        <hr>
+                        <p><strong>Tecnologias utilizadas:</strong> HTML, CSS, JavaScript, Bootstrap, PHP, MySQL</p>
+                        <p><strong>Principais funcionalidades:</strong> Recarga de créditos, pagamento por QR Code, validação NFC, histórico de viagens</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal LVV -->
+    <div class="modal fade" id="lvvModal" tabindex="-1" aria-labelledby="lvvModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lvvModalLabel">🔹 Limpe Vícios e Viva (LVV)</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="img/LVV.jpg" alt="Equipe LVV" class="team-photo">
+                    <div class="member-list">
+                        <span class="member-badge">👨‍💻 Jonas</span>
+                        <span class="member-badge">👨‍💻 Ruan</span>
+                    </div>
+                    <div class="project-description">
+                        <h6><i class="fas fa-info-circle"></i> Sobre o Projeto</h6>
+                        <p>Um sistema com propósito: localizar clínicas de reabilitação com responsabilidade, empatia e acolhimento. Uma ferramenta que pode ser o primeiro passo para quem está em busca de recomeço.</p>
+                        <hr>
+                        <p><strong>Tecnologias utilizadas:</strong> HTML, CSS, JavaScript, Bootstrap, PHP, MySQL</p>
+                        <p><strong>Principais funcionalidades:</strong> Mapa de clínicas, sistema de avaliações, chat de apoio, recursos educativos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ÉderFlix -->
+    <div class="modal fade" id="ederflixModal" tabindex="-1" aria-labelledby="ederflixModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ederflixModalLabel">🔹 ÉderFlix - Plataforma Educacional</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="img/mat.jpg" alt="Equipe ÉderFlix" class="team-photo">
+                    <div class="member-list">
+                        <span class="member-badge">👨‍💻 Diego</span>
+                        <span class="member-badge">👨‍💻 Ezequiel</span>
+                        <span class="member-badge">👨‍💻 Henry</span>
+                        <span class="member-badge">👩‍💻 Gabi</span>
+                    </div>
+                    <div class="project-description">
+                        <h6><i class="fas fa-info-circle"></i> Sobre o Projeto</h6>
+                        <p>Educação com cara de streaming. Vídeos de matemática em um ambiente intuitivo e bonito, com exercícios integrados para reforço. Estudar ficou mais leve, mais acessível, mais possível.</p>
+                        <hr>
+                        <p><strong>Tecnologias utilizadas:</strong> HTML, CSS, JavaScript, Bootstrap, PHP, MySQL</p>
+                        <p><strong>Principais funcionalidades:</strong> Streaming de vídeos, exercícios interativos, progresso do aluno, chat ao vivo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal RotaConsulta -->
+    <div class="modal fade" id="rotaconsultaModal" tabindex="-1" aria-labelledby="rotaconsultaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rotaconsultaModalLabel">🔹 RotaConsulta - Transporte Inteligente</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="img/rotas.jpg" alt="Equipe RotaConsulta" class="team-photo">
+                    <div class="member-list">
+                        <span class="member-badge">👨‍💻 Rafael</span>
+                        <span class="member-badge">👨‍💻 Felipe</span>
+                        <span class="member-badge">👨‍💻 Muryllo</span>
+                        <span class="member-badge">👨‍💻 Davi</span>
+                    </div>
+                    <div class="project-description">
+                        <h6><i class="fas fa-info-circle"></i> Sobre o Projeto</h6>
+                        <p>Rotas de ônibus em tempo real. Informação clara para facilitar deslocamentos, otimizar o tempo e devolver minutos preciosos para quem vive a cidade no ritmo dos transportes públicos.</p>
+                        <hr>
+                        <p><strong>Tecnologias utilizadas:</strong> HTML, CSS, JavaScript, Bootstrap, PHP, MySQL</p>
+                        <p><strong>Principais funcionalidades:</strong> Rastreamento em tempo real, planejador de rotas, notificações, histórico de viagens</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4><i class="fas fa-heart text-danger"></i> INFO T16 - SENAC</h4>
+                    <p>Uma turma, muitas histórias, infinitas possibilidades</p>
+                    <p class="mb-0">&copy; 2024 - Feito com carinho pela turma INFO T16</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(245, 245, 245, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(245, 245, 245, 0.95)';
+            }
+        });
+
+        // Add click tracking for project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', function() {
+                console.log('Projeto clicado:', this.querySelector('.project-title').textContent);
+            });
+        });
+
+        // Event listeners para as imagens dos bastidores
+        document.querySelectorAll('.backstage-image').forEach(image => {
+            image.addEventListener('click', function() {
+                const imageSrc = this.getAttribute('data-image') || this.src;
+                const imageCaption = this.getAttribute('data-caption') || this.alt;
+                openImageModal(imageSrc, imageCaption);
+            });
+        });
+
+
+        // Fechar modal com tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modalElement = document.getElementById('imageModal');
+                const modal = bootstrap.Modal.getInstance(modalElement);
+                if (modal) {
+                    modal.hide();
+                }
+            }
+        });
+
+        // Limpar o src da imagem quando o modal fechar para evitar cache
+        document.getElementById('imageModal').addEventListener('hidden.bs.modal', function () {
+            document.getElementById('modalImage').src = '';
+        });
+    </script>
+</body>
+</html>
